@@ -17,14 +17,18 @@ jobs:
       platform: linux
       image_resource:
         type: docker-image
-        source: {repository: busybox}
+        source:
+          repository: maven
       inputs: 
         - name: src-code
-      run: 
+      outputs:
+        - name: build-jar
+      caches: 
+        - path: src-code/ .m2
+      run:
         path: sh
-        dir: jumpstarter-spring-app
         args:
           - -exc
           - |
-             mvn clean install ./target/gs-spring-boot-0.1.0.jar
-
+             echo "hello"
+             mvn -f src-code/pom.xml package -Dmaven.repo.local=src-code/.m2
